@@ -6,7 +6,7 @@ from pandas import DataFrame
 from bs4 import BeautifulSoup
 from prettytable import from_csv
 from colorama import init, Fore
-import requests, sys
+import requests, argparse
 # 加上这行代码即可，关闭安全请求警告
 requests.packages.urllib3.disable_warnings()
 
@@ -75,6 +75,7 @@ class ICPScan:
 
 if __name__ == "__main__":
     init(autoreset=True)
+    parser = argparse.ArgumentParser()
     print(Fore.BLUE + r'''
        ___          _______       _                                
       | \ \        / / ____|     (_)                               
@@ -83,9 +84,11 @@ if __name__ == "__main__":
  | |__| |  \  /\  /  ____) |     | | (__| |_) \__ \ (_| (_| | | | |
   \____/    \/  \/  |_____/      |_|\___| .__/|___/\___\__,_|_| |_|
                                         | |                        
-                                        |_|                        ——by jammny.2021.5.15
+                                        |_|                        ——by jammny.2021.5.15                           
     ''')
-    target = input(Fore.GREEN + ">>>>输入企业/公司名称：")
-    # target = sys.argv[1]
-    icp = ICPScan(target)
-    icp.run()
+    parser.add_argument('-r', dest='r', type=str, help="从文件中批量导入目标")
+    parser.add_argument('-t', dest='t', type=str, help="指定企业名称/域名")
+    args = parser.parse_args()
+    if args.t:
+        icp = ICPScan(args.t)
+        icp.run()
